@@ -115,8 +115,25 @@ module HighOrder where
   filter' :: (a -> Bool) -> [a] -> [a]  
   filter' p = foldr (\x acc -> if p x then x : acc else acc) []  
     
+  -- will return the initial value first of the list
   head' :: [a] -> a  
   head' = foldr1 (\x _ -> x)  
     
+  -- will iterate and return the last value
   last' :: [a] -> a  
   last' = foldl1 (\_ x -> x)  
+
+  -- a good way to picture folds is like:
+  --
+  -- f 3 (f 4 (f 5 (f 6 z)))
+  --
+  -- flip (:) (flip (:) (flip (:) (flip (:) [] 3) 4) 5) 6.
+
+  -- scans are used to monitor progression of a function 
+  -- that can be implemented as foldl
+  sqrtSums :: Int  
+  sqrtSums = length (takeWhile (<1000) (scanl1 (+) (map sqrt [1..]))) + 1  
+
+  -- function application is a right associative
+  ($) :: (a -> b) -> a -> b  
+  f $ x = f x  
